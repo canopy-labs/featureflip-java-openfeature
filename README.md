@@ -8,7 +8,7 @@
 
 ```groovy
 dependencies {
-    implementation 'io.featureflip:featureflip-openfeature:0.1.0'
+    implementation 'io.featureflip:featureflip-openfeature:0.1.1'
 }
 ```
 
@@ -18,7 +18,7 @@ dependencies {
 <dependency>
     <groupId>io.featureflip</groupId>
     <artifactId>featureflip-openfeature</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
 </dependency>
 ```
 
@@ -113,6 +113,10 @@ The initial flag load is not reported — a cold start is not a change; OpenFeat
 client.track("checkout-completed", context,
     new MutableTrackingEventDetails(99.99).add("currency", "USD"));
 ```
+
+Featureflip counts each event name, per environment. The tracking event
+details are transmitted with the event but are not stored, and event counts
+are not surfaced in the app or API.
 
 The numeric value is optional and is omitted when absent rather than recorded as zero.
 

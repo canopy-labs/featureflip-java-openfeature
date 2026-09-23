@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "io.featureflip"
-version = "0.1.0"
+version = "0.1.1"
 
 java {
     toolchain {
@@ -33,8 +33,8 @@ dependencies {
     // on ../java-sdk: this package is mirrored to a public repository that has no
     // sibling to reference, so a project dependency would publish a POM nobody
     // outside this monorepo can resolve.
-    api("io.featureflip:featureflip-java:2.9.0")
-    api("dev.openfeature:sdk:1.21.0")
+    api("io.featureflip:featureflip-java:2.10.0")
+    api("dev.openfeature:sdk:1.22.1")
 
     // Compile-only, and only to satisfy javac. The OpenFeature SDK's class files
     // reference `@SuppressFBWarnings`, which it declares `provided`/`optional`, so
@@ -42,10 +42,10 @@ dependencies {
     // warning for every annotated member — and `-Werror` below turns those into a
     // failed build. Fixing the cause beats muting the whole lint category, which
     // also covers genuinely malformed class files.
-    compileOnly("com.github.spotbugs:spotbugs-annotations:4.10.2")
+    compileOnly("com.github.spotbugs:spotbugs-annotations:4.10.4")
     // `compileOnly` does not extend to the test compile classpath, and the tests
     // reference the same annotated OpenFeature types.
-    testCompileOnly("com.github.spotbugs:spotbugs-annotations:4.10.2")
+    testCompileOnly("com.github.spotbugs:spotbugs-annotations:4.10.4")
 
     testImplementation("org.junit.jupiter:junit-jupiter:5.14.4")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
@@ -55,7 +55,7 @@ dependencies {
     // and "initialize actually subscribes" is the one thing that, if broken, makes
     // configuration-changed events silently never fire.
     testImplementation("com.squareup.okhttp3:mockwebserver3-junit5:5.5.0")
-    testImplementation("org.slf4j:slf4j-simple:2.0.18")
+    testImplementation("org.slf4j:slf4j-simple:2.0.19")
 }
 
 tasks.withType<JavaCompile>().configureEach {
