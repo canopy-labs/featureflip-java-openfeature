@@ -52,6 +52,30 @@ public final class FeatureflipProvider extends EventProvider {
     /** Reported through {@link #getMetadata()}. */
     private static final String PROVIDER_NAME = "featureflip-java";
 
+    /**
+     * Sent after the SDK's own token in the User-Agent by clients this provider builds
+     * (#4150), so requests made through it can be counted apart from direct SDK use.
+     */
+    static final String WRAPPER_NAME = "featureflip-openfeature-java";
+
+    /**
+     * This package's version, stamped into a resource by processResources from the
+     * {@code version} the publish workflow writes to build.gradle.kts (#2141).
+     */
+    static final String VERSION = readVersion();
+
+    private static String readVersion() {
+        try (java.io.InputStream in = FeatureflipProvider.class.getResourceAsStream(
+                "/io/featureflip/openfeature/featureflip-openfeature.properties")) {
+            if (in == null) return "unknown";
+            java.util.Properties props = new java.util.Properties();
+            props.load(in);
+            return props.getProperty("version", "unknown");
+        } catch (java.io.IOException e) {
+            return "unknown";
+        }
+    }
+
     private static final String NOT_READY_MESSAGE = "Featureflip provider has not been initialized";
 
     private final String sdkKey;
@@ -128,9 +152,7 @@ public final class FeatureflipProvider extends EventProvider {
         FeatureflipClient current;
         synchronized (lifecycleLock) {
             if (client == null) {
-                client = config != null
-                        ? FeatureflipClient.get(sdkKey, config)
-                        : FeatureflipClient.get(sdkKey);
+                client = FeatureflipClient.get(sdkKey, identified(config));
             }
             current = client;
         }
@@ -309,5 +331,30 @@ public final class FeatureflipProvider extends EventProvider {
         synchronized (lifecycleLock) {
             return client;
         }
+    }
+
+    /**
+     * {@code config} (or the default) naming this provider as the SDK's wrapper.
+     * FeatureFlagConfig is immutable and has no {@code toBuilder()}, so this rebuilds
+     * it from every getter; IdentityTest fails if a getter is added and not copied. A
+     * wrapper the caller already set is kept: the SDK carries one, and theirs is the
+     * more specific. A client passed to the other constructor was built before the
+     * provider saw it, so its requests carry no provider token.
+     */
+    static FeatureFlagConfig identified(FeatureFlagConfig config) {
+        FeatureFlagConfig source = config != null ? config : FeatureFlagConfig.builder().build();
+        if (source.getWrapperName() != null) return source;
+        return FeatureFlagConfig.builder()
+                .baseUrl(source.getBaseUrl())
+                .connectTimeout(source.getConnectTimeout())
+                .readTimeout(source.getReadTimeout())
+                .streaming(source.isStreaming())
+                .pollInterval(source.getPollInterval())
+                .flushInterval(source.getFlushInterval())
+                .flushBatchSize(source.getFlushBatchSize())
+                .initTimeout(source.getInitTimeout())
+                .inspectors(source.getInspectors())
+                .wrapper(WRAPPER_NAME, VERSION)
+                .build();
     }
 }

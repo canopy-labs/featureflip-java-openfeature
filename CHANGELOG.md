@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.0 — 2026-10-20
+
+### Added
+
+- Requests made through the provider now identify it: `User-Agent: featureflip-java/<version> featureflip-openfeature-java/<version>`, so Featureflip can count OpenFeature usage apart from direct SDK use. This applies when the provider builds its own client (`new FeatureflipProvider(sdkKey[, config])`); the wrapper goes on a copy of your `FeatureFlagConfig`, and a `wrapper(...)` you already set is kept. A client passed to `new FeatureflipProvider(client)` was built before the provider saw it, so its requests are unchanged. (#4150)
+
+### Changed
+
+- Depends on `io.featureflip:featureflip-java` 2.11.0, the release that added `FeatureFlagConfig.Builder.wrapper`.
+
 ## 0.1.1 — 2026-09-23
 
 ### Changed

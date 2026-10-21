@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "io.featureflip"
-version = "0.1.1"
+version = "0.2.0"
 
 java {
     toolchain {
@@ -33,8 +33,8 @@ dependencies {
     // on ../java-sdk: this package is mirrored to a public repository that has no
     // sibling to reference, so a project dependency would publish a POM nobody
     // outside this monorepo can resolve.
-    api("io.featureflip:featureflip-java:2.10.0")
-    api("dev.openfeature:sdk:1.22.1")
+    api("io.featureflip:featureflip-java:2.11.0")
+    api("dev.openfeature:sdk:1.23.0")
 
     // Compile-only, and only to satisfy javac. The OpenFeature SDK's class files
     // reference `@SuppressFBWarnings`, which it declares `provided`/`optional`, so
@@ -42,10 +42,10 @@ dependencies {
     // warning for every annotated member — and `-Werror` below turns those into a
     // failed build. Fixing the cause beats muting the whole lint category, which
     // also covers genuinely malformed class files.
-    compileOnly("com.github.spotbugs:spotbugs-annotations:4.10.4")
+    compileOnly("com.github.spotbugs:spotbugs-annotations:4.10.5")
     // `compileOnly` does not extend to the test compile classpath, and the tests
     // reference the same annotated OpenFeature types.
-    testCompileOnly("com.github.spotbugs:spotbugs-annotations:4.10.4")
+    testCompileOnly("com.github.spotbugs:spotbugs-annotations:4.10.5")
 
     testImplementation("org.junit.jupiter:junit-jupiter:5.14.4")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
@@ -55,7 +55,18 @@ dependencies {
     // and "initialize actually subscribes" is the one thing that, if broken, makes
     // configuration-changed events silently never fire.
     testImplementation("com.squareup.okhttp3:mockwebserver3-junit5:5.5.0")
-    testImplementation("org.slf4j:slf4j-simple:2.0.19")
+    testImplementation("org.slf4j:slf4j-simple:2.0.20")
+}
+
+// The provider names itself in the User-Agent (#4150). publish-openfeature-java.yml seds
+// the `version` above from the release tag, so stamping it into a resource keeps the two
+// in step instead of duplicating it in source, where it would drift (#2141).
+tasks.processResources {
+    val providerVersion = project.version.toString()
+    inputs.property("version", providerVersion)
+    filesMatching("io/featureflip/openfeature/featureflip-openfeature.properties") {
+        expand("version" to providerVersion)
+    }
 }
 
 tasks.withType<JavaCompile>().configureEach {
