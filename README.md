@@ -8,7 +8,7 @@
 
 ```groovy
 dependencies {
-    implementation 'io.featureflip:featureflip-openfeature:0.2.0'
+    implementation 'io.featureflip:featureflip-openfeature:0.2.1'
 }
 ```
 
@@ -18,7 +18,7 @@ dependencies {
 <dependency>
     <groupId>io.featureflip</groupId>
     <artifactId>featureflip-openfeature</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.1</version>
 </dependency>
 ```
 

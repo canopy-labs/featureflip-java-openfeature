@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "io.featureflip"
-version = "0.2.0"
+version = "0.2.1"
 
 java {
     toolchain {
@@ -33,7 +33,7 @@ dependencies {
     // on ../java-sdk: this package is mirrored to a public repository that has no
     // sibling to reference, so a project dependency would publish a POM nobody
     // outside this monorepo can resolve.
-    api("io.featureflip:featureflip-java:2.11.0")
+    api("io.featureflip:featureflip-java:2.13.0")
     api("dev.openfeature:sdk:1.23.0")
 
     // Compile-only, and only to satisfy javac. The OpenFeature SDK's class files
@@ -54,7 +54,7 @@ dependencies {
     // fixed-value test client has no flag store, so it can never report a change —
     // and "initialize actually subscribes" is the one thing that, if broken, makes
     // configuration-changed events silently never fire.
-    testImplementation("com.squareup.okhttp3:mockwebserver3-junit5:5.5.0")
+    testImplementation("com.squareup.okhttp3:mockwebserver3-junit5:5.5.1")
     testImplementation("org.slf4j:slf4j-simple:2.0.20")
 }
 

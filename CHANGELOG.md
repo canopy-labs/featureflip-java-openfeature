@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1 — 2026-10-26
+
+### Changed
+
+- Requires `io.featureflip:featureflip-java` 2.13.0 or later, so the evaluation events behind every flag the provider resolves carry the evaluation reason (`rule-match`, `fallthrough`, `flag-disabled`, `prerequisite-failed`, `error` or `flag-not-found`) and the matched rule id. Featureflip's flag Analytics tab uses them to show which part of the targeting served the traffic. (#4268)
+
 ## 0.2.0 — 2026-10-20
 
 ### Added
