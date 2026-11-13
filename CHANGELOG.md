@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.2 — 2026-11-12
+
+### Changed
+
+- Requires `io.featureflip:featureflip-java` 2.14.0 or later. A percentage rollout whose Bucket by value is an `Iterable`, `Map` or array now skips the rule instead of hashing it into a different bucket than the other SDKs (#4572), and a rollout with no Bucket by defaults to `user_id` (#4518). The provider sets the typed user id from the OpenFeature targeting key, so contexts that carry one bucket as before.
+
 ## 0.2.1 — 2026-10-26
 
 ### Changed
