@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.3 — 2026-11-24
+
+### Security
+
+- Requires `io.featureflip:featureflip-java` 2.15.1 or later. That release redacts the SDK key from every log line the SDK emits, including error messages and exceptions from the HTTP stack. (#5167)
+
 ## 0.2.2 — 2026-11-12
 
 ### Changed
